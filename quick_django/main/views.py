@@ -53,3 +53,7 @@ def forempty(request):
     return render(request, 'main/forempty.html', {
         'members': ['鈴木三郎', '佐藤洋子', '山田次郎']
     })
+
+
+def fortag(request):
+    return render(request, 'main/fortag.html')
