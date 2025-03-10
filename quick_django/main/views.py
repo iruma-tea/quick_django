@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.db.models import Q
 from .models import Book
 import random
-import datetime
+from datetime import datetime
+from datetime import date
 
 # Create your views here.
 
@@ -147,4 +149,52 @@ def slice(request):
 def date_time(request):
     return render(request, 'main/date_time.html', {
         'today': datetime.datetime.now()
+    })
+
+
+def filter(request):
+    books = Book.objects.filter(publisher='翔泳社')
+    # AND 条件
+    # books = Book.objects.filter(publisher='翔泳社', price=2800)
+    # 大小比較
+    # books = Book.objects.filter(price__lt=3000)
+    # 部分一致
+    # books = Book.objects.filter(title__contains='独習')
+    # 正規表現
+    # books = Book.objects.filter(title__regex=r'[0-9]+')
+    # NULL比較
+    # books = Book.objects.filter(title__isnull=True)
+    # 範囲比較
+    # books = Book.objects.filter(published__range=(date(2018, 1, 1), date(2018, 12, 31)))
+    # 候補比較
+    # books = Book.objects.filter(publisher__in=['翔泳社', '技術評論社', '日経BP'])
+    # 日付比較(年/月/日)
+    # books = Book.objects.filter(published__year=2019)
+    # books = Book.objects.filter(published__year__lte=2019)
+    # books = Book.objects.filter(published__week_day__range=(2, 6))
+    return render(request, 'main/book_list.html', {
+        'books': books,
+    })
+
+
+def filter_or(request):
+    # books = Book.objects.filter(publisher='翔泳社').filter(price__gte=2800)
+    # Qオブジェクトの基本
+    books = Book.objects.filter(Q(publisher='翔泳社') | Q(price__gte=2800))
+    return render(request, 'main/book_list.html', {
+        'books': books,
+    })
+
+
+def exclude(request):
+    books = Book.objects.exclude(publisher='翔泳社')
+    return render(request, 'main/book_list.html', {
+        'books': books,
+    })
+
+
+def get(request):
+    book = Book.objects.get(pk=1)
+    return render(request, 'main/book_detail.html', {
+        'book': book,
     })
