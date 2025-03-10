@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Book
 import random
+import datetime
 
 # Create your views here.
 
@@ -91,4 +92,59 @@ def cycle(request):
             {'name': '山本花子', 'sex': '女', 'birth': '1981-07-28'},
             {'name': '田中久美', 'sex': '女', 'birth': '1980-09-07'},
         ]
+    })
+
+
+def escape(request):
+    return render(request, 'main/escape.html', {
+        'msg': '''<img src="https://wings.msn.to/image/wings.jpg" title="ロゴ" />
+            <p>WINGSへようこそ</p>'''
+    })
+
+
+def temptag(request):
+    return render(request, 'main/temptag.html')
+
+
+def verbatim(request):
+    return render(request, 'main/verbatim.html')
+
+
+def master(request):
+    return render(request, 'main/master.html', {
+        'msg': 'こんにちは、世界！'
+    })
+
+
+def include(request):
+    return render(request, 'main/include.html', {
+        'name': '鈴木',
+        'current': datetime.datetime.now(),
+    })
+
+
+def static(request):
+    return render(request, 'main/static.html')
+
+
+def strformat(request):
+    return render(request, 'main/strformat.html', {
+        'data1': None,
+        'data2': 'WINGS\nWww INtegrated Guide on Server-architecture',
+        'data3': 'https://wings.msn.to/',
+        'data4': ['い', 'ろ', 'は', 'に', 'ほ', 'へ'],
+        'data5': 987.654,
+        'data6': 'hello django'
+    })
+
+
+def slice(request):
+    return render(request, 'main/slice.html', {
+        'data': ['い', 'ろ', 'は', 'に', 'ほ', 'へ']
+    })
+
+
+def date_time(request):
+    return render(request, 'main/date_time.html', {
+        'today': datetime.datetime.now()
     })

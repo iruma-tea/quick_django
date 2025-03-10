@@ -15,4 +15,13 @@ urlpatterns = [
     path('ifchanged', views.ifchanged, name='ifchanged'),
     path('regroup', views.regroup, name='regroup'),
     path('cycle', views.cycle, name='cycle'),
+    path('escape', views.escape, name='escape'),
+    path('temptag', views.temptag, name='temptag'),
+    path('verbatim', views.verbatim, name='verbatim'),
+    path('master', views.master, name='master'),
+    path('include', views.include, name='include'),
+    path('static', views.static, name='static'),
+    path('strformat', views.strformat, name='strformat'),
+    path('slice', views.slice, name='slice'),
+    path('date_time', views.date_time, name='date_time'),
 ]
