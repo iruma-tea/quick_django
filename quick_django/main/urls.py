@@ -12,4 +12,7 @@ urlpatterns = [
     path('forloop', views.forloop, name='forloop'),
     path('forempty', views.forempty, name='forempty'),
     path('fortag', views.fortag, name='fortag'),
+    path('ifchanged', views.ifchanged, name='ifchanged'),
+    path('regroup', views.regroup, name='regroup'),
+    path('cycle', views.cycle, name='cycle'),
 ]

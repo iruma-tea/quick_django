@@ -57,3 +57,38 @@ def forempty(request):
 
 def fortag(request):
     return render(request, 'main/fortag.html')
+
+
+def ifchanged(request):
+    return render(request, 'main/ifchanged.html', {
+        'schedule': [
+            (10, 'A企画反省会'),
+            (10, 'B書籍脱稿'),
+            (15, 'WINGS定例会議'),
+            (30, 'C企画打合せ'),
+        ]
+    })
+
+
+def regroup(request):
+    return render(request, 'main/regroup.html', {
+        'members': [
+            {'name': '鈴木三郎', 'sex': '男', 'birth': '1980-12-23'},
+            {'name': '山田次郎', 'sex': '男', 'birth': '1978-10-13'},
+            {'name': '佐藤健司', 'sex': '男', 'birth': '1976-04-06'},
+            {'name': '山本花子', 'sex': '女', 'birth': '1981-07-28'},
+            {'name': '田中久美', 'sex': '女', 'birth': '1980-09-07'},
+        ]
+    })
+
+
+def cycle(request):
+    return render(request, 'main/cycle.html', {
+        'members': [
+            {'name': '鈴木三郎', 'sex': '男', 'birth': '1980-12-23'},
+            {'name': '山田次郎', 'sex': '男', 'birth': '1978-10-13'},
+            {'name': '佐藤健司', 'sex': '男', 'birth': '1976-04-06'},
+            {'name': '山本花子', 'sex': '女', 'birth': '1981-07-28'},
+            {'name': '田中久美', 'sex': '女', 'birth': '1980-09-07'},
+        ]
+    })
