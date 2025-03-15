@@ -32,4 +32,6 @@ urlpatterns = [
     path('groupby', views.groupby, name='groupby'),
     path('union', views.union, name='union'),
     path('raw', views.raw, name='raw'),
+    path('rel', views.rel, name='rel'),
+    path('rel2', views.rel2, name='rel2'),
 ]

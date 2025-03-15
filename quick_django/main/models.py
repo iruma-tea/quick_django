@@ -50,3 +50,24 @@ class Review(models.Model):
 
     def __str__(self):
         return f'{self.name}:{self.body[:10]}'
+
+
+class Author(models.Model):
+    # Book モデルとのリレーション
+    books = models.ManyToManyField(Book)
+
+    # 著者名
+    name = models.CharField(
+        verbose_name='著者名',
+        max_length=20
+    )
+
+    # 住所
+    address = models.CharField(
+        verbose_name='住所',
+        max_length=100
+    )
+
+    # Authorモデルの文字列表現
+    def __str__(self):
+        return self.name

@@ -259,3 +259,15 @@ def raw(request):
     return render(request, 'main/book_list.html', {
         'books': books,
     })
+
+
+def rel(request):
+    return render(request, 'main/rel.html', {
+        'book': Book.objects.get(pk=1)
+    })
+
+
+def rel2(request):
+    return render(request, 'main/rel2.html', {
+        'books': Book.objects.all()
+    })
