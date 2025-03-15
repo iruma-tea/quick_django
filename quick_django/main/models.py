@@ -32,3 +32,21 @@ class Book(models.Model):
 
     def __str__(self):
         return f'{self.title}({self.publisher}/{self.price}円)'
+
+
+class Review(models.Model):
+    # 書籍情報との関連付け
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+    name = models.CharField(
+        verbose_name='名前',
+        max_length=20
+    )
+
+    body = models.TextField(
+        verbose_name='本文',
+        max_length=255
+    )
+
+    def __str__(self):
+        return f'{self.name}:{self.body[:10]}'
