@@ -27,5 +27,9 @@ urlpatterns = [
     path('filter', views.filter, name='filter'),
     path('exclude', views.exclude, name='exclude'),
     path('get', views.get, name='get'),
-    path('filter_or', views.filter_or, name='filter_or')
+    path('filter_or', views.filter_or, name='filter_or'),
+    path('filter_other', views.filter_other, name='filter_other'),
+    path('groupby', views.groupby, name='groupby'),
+    path('union', views.union, name='union'),
+    path('raw', views.raw, name='raw'),
 ]

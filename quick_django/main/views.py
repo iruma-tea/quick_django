@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.db.models import Q
+from django.db.models import Count
+from django.db.models.functions import Substr
 from .models import Book
 import random
 from datetime import datetime
@@ -180,7 +182,38 @@ def filter(request):
 def filter_or(request):
     # books = Book.objects.filter(publisher='翔泳社').filter(price__gte=2800)
     # Qオブジェクトの基本
-    books = Book.objects.filter(Q(publisher='翔泳社') | Q(price__gte=2800))
+    # books = Book.objects.filter(Q(publisher='翔泳社') | Q(price__gte=2800))
+
+    # より複雑な条件式
+    books = Book.objects.filter(
+        ~Q(publisher='翔泳社') & (Q(published_year=2018) | (Q(published_year=2020)))
+    )
+    return render(request, 'main/book_list.html', {
+        'books': books,
+    })
+
+
+def filter_other(request):
+    # 出版社(昇順)／刊行日の降順でソート
+    books = Book.objects.order_by('publisher', '-published')
+
+    # ランダムにソート
+    # books = Book.objects.order_by('?')
+
+    # 取得範囲の指定
+    # books = Book.objects.order_by('-price')[2:5]
+
+    # 取得列の制約
+    # books = Book.objects.values('title', 'price')
+
+    # 書名から最初の5文字だけを取り出す
+    # books = Book.objects.values('price', short_title=Substr('title', 1, 5))
+    # return HttpResponse(books[0]['short_title'])
+
+    # リストとして取得
+    # books = Book.objects.values_list('title', flat=True)
+    # return HttpResponse(books[0])
+
     return render(request, 'main/book_list.html', {
         'books': books,
     })
@@ -197,4 +230,32 @@ def get(request):
     book = Book.objects.get(pk=1)
     return render(request, 'main/book_detail.html', {
         'book': book,
+    })
+
+
+def groupby(request):
+    return render(request, 'main/groupby.html', {
+        'groups': Book.objects.values('publisher')
+        .annotate(pub_count=Count('publisher')).order_by('-pub_count')
+    })
+
+    # cnt = Book.objects.filter(publisher='翔泳社').count()
+    # return HttpResponse(cnt)
+
+    # flag = Book.objects.filter(publisher='翔泳社').exists()
+    # return HttpResponse(flag)
+
+
+def union(request):
+    b1 = Book.objects.filter(publisher='翔泳社')
+    b2 = Book.objects.filter(publisher='技術評論社')
+    return render(request, 'main/book_list.html', {
+        'books': b1.union(b2),
+    })
+
+
+def raw(request):
+    books = Book.objects.raw('SELECT * FROM main_book WHERE publisher = %s', ['翔泳社'])
+    return render(request, 'main/book_list.html', {
+        'books': books,
     })
