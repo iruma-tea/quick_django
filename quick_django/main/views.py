@@ -271,3 +271,7 @@ def rel2(request):
     return render(request, 'main/rel2.html', {
         'books': Book.objects.all()
     })
+
+
+def route_param(request, id):
+    return HttpResponse(f'id値：{id}')

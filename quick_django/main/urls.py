@@ -34,4 +34,5 @@ urlpatterns = [
     path('raw', views.raw, name='raw'),
     path('rel', views.rel, name='rel'),
     path('rel2', views.rel2, name='rel2'),
+    path('route_param/<int:id>', views.route_param, name='route_param'),
 ]
