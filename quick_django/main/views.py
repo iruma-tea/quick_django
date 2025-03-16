@@ -1,5 +1,6 @@
+import csv
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 from django.urls import reverse
 from django.db.models import Q
 from django.db.models import Count
@@ -314,3 +315,31 @@ def res_notfound(request):
     return render(request, 'main/book_detail.html', {
         'book': book
     })
+
+
+def res_header(request):
+    response = HttpResponse('<message>Hello,world!!</message>', content_type='text/xml')
+    response['Content-Disposition'] = 'attachment; filename="hoge.xml"'
+    return response
+
+
+def res_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="data.csv"'
+    writer = csv.writer(response)
+    writer.writerows([
+        ['tyamada', '山田太郎', '30'],
+        ['ksuzuki', '鈴木健司', '26'],
+        ['itanaka', '田中一郎', '34']
+    ])
+    return response
+
+
+def res_json(request):
+    return JsonResponse({
+        'title': '独習Python',
+        'price': 3200,
+        'publisher': '翔泳社',
+        'published': date(2020, 6, 23)
+    })
+    # return JsonResponse(['Python', 'Ruby', 'PHP'], safe=False)

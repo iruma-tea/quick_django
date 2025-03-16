@@ -11,6 +11,8 @@
 		"files.eol": "\n",
 		"editor.formatOnSave": true,
 		"python.envFile": "${workspaceFolder}/.env",
+		"python.analysis.autoImportCompletions":true,
+		"python.analysis.indexing": true,
 		"terminal.integrated.env.linux": {
 			"VIRTUAL_ENV": "${workspaceFolder}/.venv",
 			"PATH": "${workspaceFolder}/.venv/bin:${env:PATH}"

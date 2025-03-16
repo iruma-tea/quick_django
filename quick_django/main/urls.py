@@ -43,4 +43,7 @@ urlpatterns = [
     path('req_redirect', views.req_redirect, name='req_redirect'),
     path('details/<int:id>', views.details, name='details'),
     path('res_notfound', views.res_notfound, name='res_notfound'),
+    path('res_header', views.res_header, name='res_header'),
+    path('res_csv', views.res_csv, name='res_csv'),
+    path('res_json', views.res_json, name='res_json'),
 ]
