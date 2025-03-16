@@ -71,3 +71,18 @@ class Author(models.Model):
     # Authorモデルの文字列表現
     def __str__(self):
         return self.name
+
+
+class User(models.Model):
+    author = models.OneToOneField(Author, on_delete=models.CASCADE)
+    handle = models.CharField(
+        verbose_name='ユーザー名',
+        max_length=20
+    )
+    email = models.CharField(
+        verbose_name='メールアドレス',
+        max_length=100
+    )
+
+    def __str__(self):
+        return self.handle
