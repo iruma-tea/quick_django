@@ -1,5 +1,6 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, Http404
+from django.urls import reverse
 from django.db.models import Q
 from django.db.models import Count
 from django.db.models.functions import Substr
@@ -273,5 +274,43 @@ def rel2(request):
     })
 
 
-def route_param(request, id):
+def route_param(request, id=1):
     return HttpResponse(f'id値：{id}')
+
+
+def search(request, keywd):
+    return HttpResponse(f'パラメーター: {keywd}')
+
+
+def req_query(request):
+    return HttpResponse(f'id値: {request.GET["id"]}')
+
+
+def req_header(request):
+    return HttpResponse(f'Use-Agent: {request.headers["User-Agent"]}')
+
+
+def req_redirect(request):
+    # return redirect('list')
+    # return redirect('http://wings.msn.to/', permanent=True)
+    # return redirect('route_param', id=10)
+    # path = reverse('route_param', kwargs={'id': 1})
+    # return HttpResponse(path)
+    book = Book.objects.get(pk=1)
+    return redirect(book)
+
+
+def details(request, id):
+    return HttpResponse(f'id値：{id}')
+
+
+def res_notfound(request):
+    # try:
+    #     book = Book.objects.get(pk=108)
+    # except Book.DoesNotExist:
+    #     raise Http404('指定の書籍情報が存在しません。')
+
+    book = get_object_or_404(Book, pk=108)
+    return render(request, 'main/book_detail.html', {
+        'book': book
+    })

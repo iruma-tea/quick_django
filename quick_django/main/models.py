@@ -30,6 +30,9 @@ class Book(models.Model):
         verbose_name='刊行日'
     )
 
+    def get_absolute_url(self):
+        return f'details/{self.id}'
+
     def __str__(self):
         return f'{self.title}({self.publisher}/{self.price}円)'
 
