@@ -1,14 +1,17 @@
 import csv
+import urllib.parse
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, Http404, JsonResponse
+from django.http import FileResponse, HttpResponse, Http404, JsonResponse
 from django.urls import reverse
 from django.db.models import Q
 from django.db.models import Count
 from django.db.models.functions import Substr
+import urllib
 from .models import Book
 import random
 from datetime import datetime
 from datetime import date
+from django.views.generic import TemplateView
 
 # Create your views here.
 
@@ -342,4 +345,40 @@ def res_json(request):
         'publisher': '翔泳社',
         'published': date(2020, 6, 23)
     })
+
+
+def res_file(request):
     # return JsonResponse(['Python', 'Ruby', 'PHP'], safe=False)
+    return FileResponse(open('c:/data/wings.png', 'rb'), as_attachment=True, filename='download.png')
+
+
+def setcookie(request):
+    response = HttpResponse(render(request, 'main/setcookie.html'))
+    response.set_cookie('app_title', urllib.parse.quote('速習 Django'), 60 * 60 * 24 * 30)
+    return response
+
+
+def getcookie(request):
+    app_title = urllib.parse.unquote(request.COOKIES['app_title']) if 'app_title' in request.COOKIES else '-'
+    return render(request, 'main/getcookie.html', {
+        'app_title': app_title
+    })
+
+
+def setsession(request):
+    request.session['app_title'] = '速習 Django'
+    return HttpResponse('セッションを保存しました。')
+
+
+def getsession(request):
+    title = request.session['app_title'] if 'app_title' in request.session else '-'
+    return HttpResponse(title)
+
+
+class MyTempView(TemplateView):
+    template_name = 'main/temp.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['msg'] = 'こんにちは、世界！'
+        return context

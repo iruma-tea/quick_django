@@ -46,4 +46,10 @@ urlpatterns = [
     path('res_header', views.res_header, name='res_header'),
     path('res_csv', views.res_csv, name='res_csv'),
     path('res_json', views.res_json, name='res_json'),
+    path('res_file', views.res_file, name='res_file'),
+    path('setcookie', views.setcookie, name='setcookie'),
+    path('getcookie', views.getcookie, name='getcookie'),
+    path('setsession', views.setsession, name='setsession'),
+    path('getsession', views.getsession, name='getsession'),
+    path('temp_view', views.MyTempView.as_view(), name='temp_view'),
 ]
