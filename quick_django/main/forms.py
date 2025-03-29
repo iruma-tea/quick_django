@@ -1,4 +1,7 @@
+from datetime import date
 from django import forms
+
+from .validates import compare_today
 
 
 class BookForm(forms.Form):
@@ -21,7 +24,28 @@ class BookForm(forms.Form):
         ('SBクリエティブ', 'SBクリエティブ'),
         ('日経BP', '日経BP'),
     ])
-    published = forms.DateField(label='刊行日', required=True, error_messages={
+    published = forms.DateField(label='刊行日', required=True, validators=[compare_today], error_messages={
         'required': '刊行日は必須です。',
         'invalid': '刊行日はYYYY-MM-DDの形式で入力してください。',
     })
+
+    # def clean_published(self):
+    #     published = self.clean_data['published']
+
+    #     if date.today() < published:
+    #         raise forms.ValidationError('刊行日は今日以前の日付で入力してください。')
+
+    #     return published
+
+    def clean(self):
+        cleaned_data = super().clean()
+        isbn = cleaned_data.get('isbn')
+        published = cleaned_data.get('published')
+
+        if isbn and published:
+            if published.year < 2007:
+                if len(isbn) != 13:
+                    raise forms.ValidationError('ISBNコードは13桁で入力してください。')
+            else:
+                if len(isbn) != 17:
+                    raise forms.ValidationError('ISBNコードは17桁で入力してください。')

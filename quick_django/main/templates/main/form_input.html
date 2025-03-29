@@ -2,7 +2,9 @@
 <ul>
   {% for field in form %} {% for error in field.errors %}
   <li>{{ error }}</li>
-  {% endfor %} {% endfor %}
+  {% endfor %} {% endfor %} {% for error in form.non_field_errors %}
+  <li>{{error}}</li>
+  {% endfor %}
 </ul>
 <form action="./form_process" method="post" novalidate>
   {% csrf_token %} {% for field in form %}
