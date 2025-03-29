@@ -10,12 +10,13 @@ from django.db.models import Q
 from django.db.models import Count
 from django.db.models.functions import Substr
 import urllib
-from .forms import BookForm, UploadForm
+from .forms import BookForm, BookModelForm, UploadForm
 from .models import Book
 import random
 from datetime import datetime
 from datetime import date
 from django.views.generic import TemplateView
+from django.contrib import messages
 
 # Create your views here.
 
@@ -416,6 +417,51 @@ def upload_process(request):
                 dest.write(chunk)
         return HTTPResponse(f'{file.name}のアップロードに成功しました。')
     return HTTPResponse('アップロードに失敗しました。')
+
+
+def crud_new(request):
+    form = BookModelForm()
+    return render(request, 'main/crud_new.html', {
+        'form': form
+    })
+
+
+@require_POST
+def crud_create(request):
+    obj = Book()
+    form = BookModelForm(request.POST, instance=obj)
+    if form.is_valid():
+        form.save()
+        messages.add_message(request, messages.SUCCESS, 'データの保存に成功しました。')
+        return redirect('crud_new')
+    else:
+        return render(request, 'main/crud_new.html', {
+            'form': form
+        })
+
+
+def crud_edit(request, id):
+    obj = Book.objects.get(pk=id)
+    form = BookModelForm(instance=obj)
+    return render(request, 'main/crud_edit.html', {
+        'id': id,
+        'form': form
+    })
+
+
+@require_POST
+def crud_update(request, id):
+    obj = Book.objects.get(pk=id)
+    form = BookModelForm(request.POST, instance=obj)
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'データの更新に成功しました。')
+        return redirect(reverse('crud_edit', kwargs={'id': id}))
+    else:
+        return render(request, 'main/crud_edit.html', {
+            'id': id,
+            'form': form
+        })
 
 
 class MyTempView(TemplateView):

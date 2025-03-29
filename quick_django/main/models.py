@@ -1,11 +1,18 @@
 from django.db import models
-
-
+from django.core.validators import RegexValidator, MinValueValidator
 # Create your models here.
+
+
 class Book(models.Model):
     isbn = models.CharField(
         verbose_name='ISBNコード',
-        max_length=20
+        max_length=20,
+        validators=[
+            RegexValidator(
+                r'^978-4-[0-9]{4}-[0-9]{4}-[0-9X]{1}$',
+                message='ISBNコードは正しい形式で指定してください。'
+            )
+        ]
     )
     title = models.CharField(
         verbose_name='書名',
@@ -13,7 +20,14 @@ class Book(models.Model):
     )
     price = models.IntegerField(
         verbose_name='価格',
-        default=0
+        default=0,
+        validators=[
+            MinValueValidator(
+                17,
+                message='価格は正の正数で指定してください。'
+            ),
+
+        ]
     )
     publisher = models.CharField(
         verbose_name='出版社',
