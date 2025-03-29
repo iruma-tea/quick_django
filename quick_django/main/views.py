@@ -1,12 +1,15 @@
 import csv
+from turtle import isvisible
 import urllib.parse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import FileResponse, HttpResponse, Http404, JsonResponse
+from django.views.decorators.http import require_POST
 from django.urls import reverse
 from django.db.models import Q
 from django.db.models import Count
 from django.db.models.functions import Substr
 import urllib
+from .forms import BookForm
 from .models import Book
 import random
 from datetime import datetime
@@ -373,6 +376,26 @@ def setsession(request):
 def getsession(request):
     title = request.session['app_title'] if 'app_title' in request.session else '-'
     return HttpResponse(title)
+
+
+def form_input(request):
+    form = BookForm()
+    return render(request, 'main/form_input.html', {
+        'form': form
+    })
+
+
+@require_POST
+def form_process(request):
+    form = BookForm(request.POST)
+    if form.is_valid():
+        return render(request, 'main/form_process.html', {
+            'form': form
+        })
+    else:
+        return render(request, 'main/form_input.html', {
+            'form': form
+        })
 
 
 class MyTempView(TemplateView):

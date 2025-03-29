@@ -9,6 +9,13 @@
 		"workbench.colorTheme": "Monokai",
 		"files.encoding": "utf8",
 		"files.eol": "\n",
+		"files.associations": {
+			"**/templates/*.html": "django-html",
+			"**/templates/*": "django-text"
+		},
+		"emmet.includeLanguages": {
+			"django-html": "html"
+		},
 		"editor.formatOnSave": true,
 		"python.envFile": "${workspaceFolder}/.env",
 		"python.analysis.autoImportCompletions":true,
