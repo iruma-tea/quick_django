@@ -1,4 +1,5 @@
 import csv
+from http.client import HTTPResponse
 from turtle import isvisible
 import urllib.parse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -9,7 +10,7 @@ from django.db.models import Q
 from django.db.models import Count
 from django.db.models.functions import Substr
 import urllib
-from .forms import BookForm
+from .forms import BookForm, UploadForm
 from .models import Book
 import random
 from datetime import datetime
@@ -396,6 +397,25 @@ def form_process(request):
         return render(request, 'main/form_input.html', {
             'form': form
         })
+
+
+def upload_input(request):
+    form = UploadForm()
+    return render(request, 'main/upload_input.html', {
+        'form': form
+    })
+
+
+@require_POST
+def upload_process(request):
+    form = UploadForm(request.POST, request.FILES)
+    if form.is_valid():
+        file = form.cleaned_data['body']
+        with open(file.name, 'wb+') as dest:
+            for chunk in file.chunks():
+                dest.write(chunk)
+        return HTTPResponse(f'{file.name}のアップロードに成功しました。')
+    return HTTPResponse('アップロードに失敗しました。')
 
 
 class MyTempView(TemplateView):

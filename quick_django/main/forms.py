@@ -17,17 +17,22 @@ class BookForm(forms.Form):
         'required': '価格は必須です。',
         'min_value': '価格は正数で入力してください。'
     })
-    publisher = forms.ChoiceField(label='出版社', choices=[
-        ('翔泳社', '翔泳社'),
-        ('技術評論社', '技術評論社'),
-        ('秀和システム', '秀和システム'),
-        ('SBクリエティブ', 'SBクリエティブ'),
-        ('日経BP', '日経BP'),
-    ])
+    publisher = forms.ChoiceField(label='出版社',
+                                  # widget=forms.RadioSelect,
+                                  # widget=forms.SelectMultiple(attrs={'size': 5}),
+                                  choices=[
+                                      ('翔泳社', '翔泳社'),
+                                      ('技術評論社', '技術評論社'),
+                                      ('秀和システム', '秀和システム'),
+                                      ('SBクリエティブ', 'SBクリエティブ'),
+                                      ('日経BP', '日経BP'),
+                                  ])
     published = forms.DateField(label='刊行日', required=True, validators=[compare_today], error_messages={
         'required': '刊行日は必須です。',
         'invalid': '刊行日はYYYY-MM-DDの形式で入力してください。',
     })
+
+    # is_deleted = forms.BooleanField(label='絶版', required=False)
 
     # def clean_published(self):
     #     published = self.clean_data['published']
@@ -49,3 +54,7 @@ class BookForm(forms.Form):
             else:
                 if len(isbn) != 17:
                     raise forms.ValidationError('ISBNコードは17桁で入力してください。')
+
+
+class UploadForm(forms.Form):
+    body = forms.FileField()
