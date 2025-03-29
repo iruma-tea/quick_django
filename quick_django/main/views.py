@@ -464,6 +464,23 @@ def crud_update(request, id):
         })
 
 
+def crud_show(request, id):
+    obj = Book.objects.get(pk=id)
+    form = BookModelForm(instance=obj)
+    return render(request, 'main/crud_show.html', {
+        'id': id,
+        'form': form
+    })
+
+
+@require_POST
+def crud_delete(request, id):
+    obj = Book.objects.get(pk=id)
+    obj.delete()
+    messages.success(request, 'データの削除に成功しました。')
+    return redirect(reverse('list'))
+
+
 class MyTempView(TemplateView):
     template_name = 'main/temp.html'
 

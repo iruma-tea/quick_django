@@ -1,3 +1,4 @@
+from os import name
 from django.urls import path, re_path
 from . import views
 
@@ -60,4 +61,6 @@ urlpatterns = [
     path('crud_create', views.crud_create, name='crud_create'),
     path('crud_edit/<int:id>', views.crud_edit, name='crud_edit'),
     path('crud_update/<int:id>', views.crud_update, name='crud_update'),
+    path('crud_show/<int:id>', views.crud_show, name='crud_show'),
+    path('crud_delete/<int:id>', views.crud_delete, name='crud_delete'),
 ]
